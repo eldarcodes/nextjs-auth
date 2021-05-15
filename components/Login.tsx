@@ -18,20 +18,17 @@ interface FormValues {
   captcha: string;
 }
 
+const getRandomIndex = () => Math.floor(Math.random() * captchaSource.length);
+
 export const Login: React.FC<LoginProps> = ({}) => {
   const [error, setError] = useState<string>("");
-  const [form] = Form.useForm();
-
-  const getRandomIndex = () => Math.floor(Math.random() * captchaSource.length);
-
   const [captchaIndex, setCaptchaIndex] = useState<number>(getRandomIndex());
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [form] = Form.useForm();
+  const router = useRouter();
   const users = useSelector(
     (state: ReduxDatabase) => state.databaseReducer.users
   );
-
-  const router = useRouter();
 
   const captcha = captchaSource[captchaIndex];
 
@@ -102,59 +99,52 @@ export const Login: React.FC<LoginProps> = ({}) => {
   };
 
   return (
-    <>
-      <Form
-        name="basic"
-        form={form}
-        layout="vertical"
-        style={{ width: 350 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
+    <Form
+      name="basic"
+      form={form}
+      layout="vertical"
+      style={{ width: 350 }}
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+    >
+      {error && (
+        <Alert style={{ marginBottom: 15 }} message={error} type="error" />
+      )}
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[{ required: true, message: "Please input your username!" }]}
+        style={{ marginBottom: 15 }}
       >
-        {error && (
-          <Alert style={{ marginBottom: 15 }} message={error} type="error" />
-        )}
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
-          style={{ marginBottom: 15 }}
-        >
-          <Input autoFocus />
-        </Form.Item>
+        <Input autoFocus />
+      </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          style={{ marginBottom: 15 }}
-        >
-          <Input.Password />
-        </Form.Item>
+      <Form.Item label="Password" name="password" style={{ marginBottom: 15 }}>
+        <Input.Password />
+      </Form.Item>
 
-        <Row align="middle" style={{ marginBottom: 5 }}>
-          <Image src={captcha.path} alt="Captcha" width="200" height="50" />
-          <Button
-            style={{ marginRight: 10 }}
-            icon={<SyncOutlined />}
-            loading={loading}
-            onClick={getNewCaptcha}
-          />
-        </Row>
-        <Form.Item
-          rules={[{ required: true }]}
-          label="Enter text from the image"
-          name="captcha"
-          style={{ marginBottom: 15 }}
-        >
-          <Input placeholder="Enter text from the image" />
-        </Form.Item>
+      <Row align="middle" style={{ marginBottom: 5 }}>
+        <Image src={captcha.path} alt="Captcha" width="200" height="50" />
+        <Button
+          style={{ marginRight: 10 }}
+          icon={<SyncOutlined spin={loading} />}
+          onClick={getNewCaptcha}
+        />
+      </Row>
+      <Form.Item
+        rules={[{ required: true }]}
+        label="Enter text from the image"
+        name="captcha"
+        style={{ marginBottom: 15 }}
+      >
+        <Input placeholder="Enter text from the image" />
+      </Form.Item>
 
-        <Form.Item>
-          <Button block type="primary" htmlType="submit">
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
-    </>
+      <Form.Item>
+        <Button block type="primary" htmlType="submit">
+          Login
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
