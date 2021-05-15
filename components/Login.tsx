@@ -81,7 +81,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
           rules={[{ required: true, message: "Please input your username!" }]}
           style={{ marginBottom: 15 }}
         >
-          <Input />
+          <Input autoFocus />
         </Form.Item>
 
         <Form.Item

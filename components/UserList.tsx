@@ -7,6 +7,10 @@ import {
   Switch,
   Alert,
   message,
+  Space,
+  Col,
+  Row,
+  InputNumber,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +19,7 @@ import { setDatabase } from "../redux/database-reducer";
 import { ReduxDatabase } from "../store";
 import { find } from "lodash";
 import { HIDE_ERROR_DELAY } from "../constants/constants";
+import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
 
 interface UserListProps {}
 
@@ -24,6 +29,10 @@ export const UserList: React.FC<UserListProps> = ({}) => {
   const [error, setError] = useState<string>("");
 
   const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
+
+  const [minPasswordLength, setMinPasswordLength] = useState<number>(
+    database.MIN_PASSWORD_LENGTH
+  );
 
   useEffect(() => {
     if (error) {
@@ -108,9 +117,51 @@ export const UserList: React.FC<UserListProps> = ({}) => {
 
   return (
     <>
-      <Typography.Title level={2}>User list</Typography.Title>
+      <Row>
+        <Col span={12}>
+          <Space align="center" style={{ marginBottom: 15 }}>
+            <Typography.Title style={{ marginBottom: 0 }} level={2}>
+              User list
+            </Typography.Title>
+            <Button
+              icon={<PlusOutlined />}
+              size="large"
+              type="primary"
+              onClick={() => setVisibleModal(true)}
+            >
+              Create new user
+            </Button>
+          </Space>
+        </Col>
+        <Col span={12} style={{ textAlign: "right" }}>
+          <p
+            style={{
+              marginBottom: 0,
+              display: "inline-block",
+              fontSize: 16,
+              marginRight: 5,
+            }}
+          >
+            Minimal password length for users:
+          </p>
+          <InputNumber
+            size="large"
+            placeholder="Minimal password length for users"
+            style={{ width: 200 }}
+            onChange={(value) => setMinPasswordLength(+value)}
+            value={minPasswordLength}
+          />
+          <Button
+            style={{ marginLeft: 5 }}
+            size="large"
+            icon={<SaveOutlined />}
+            disabled={+minPasswordLength === +database.MIN_PASSWORD_LENGTH}
+          >
+            Save
+          </Button>
+        </Col>
+      </Row>
       <Table rowKey="id" columns={columns} dataSource={users || []} />
-      <Button onClick={() => setVisibleModal(true)}>Create new user</Button>
       <Modal
         title="Create new user"
         visible={visibleModal}
@@ -122,6 +173,8 @@ export const UserList: React.FC<UserListProps> = ({}) => {
         )}
         <div style={{ marginBottom: 5 }}>New user name</div>{" "}
         <Input
+          autoFocus
+          onPressEnter={handleCreateUser}
           value={newUserName}
           onChange={(e) => setNewUserName(e.target.value)}
         />
