@@ -32,10 +32,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
   }, [error]);
 
   const onFinish = (values: FormValues) => {
-    const { password, username } = values;
+    const { password = "", username } = values;
 
     const isCorrectUsername = !!find(users, { username });
-    const isCorrectPassword = !!find(users, { username, password });
+    const isCorrectPassword = !!find(users, {
+      username,
+      password,
+    });
 
     const user = find(users, { username, password });
 
@@ -48,6 +51,10 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
     if (!user) {
       return setError("User not found");
+    }
+
+    if (user.blocked) {
+      return setError("User is blocked");
     }
 
     const _user: User = user;
@@ -80,7 +87,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
           style={{ marginBottom: 15 }}
         >
           <Input.Password />

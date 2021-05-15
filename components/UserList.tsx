@@ -1,16 +1,37 @@
-import { Button, Space, Table, Typography, Modal, Input, Switch } from "antd";
-import React, { useState } from "react";
+import {
+  Button,
+  Table,
+  Typography,
+  Modal,
+  Input,
+  Switch,
+  Alert,
+  message,
+} from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 } from "uuid";
 import { setDatabase } from "../redux/database-reducer";
 import { ReduxDatabase } from "../store";
+import { find } from "lodash";
+import { HIDE_ERROR_DELAY } from "../constants/constants";
 
 interface UserListProps {}
 
 export const UserList: React.FC<UserListProps> = ({}) => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError("");
+      }, HIDE_ERROR_DELAY);
+    }
+  }, [error]);
 
   const { users } = database;
 
@@ -60,7 +81,30 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     dispatch(setDatabase(newDatabase));
   };
 
-  const handleCreateUser = () => {};
+  const handleCreateUser = () => {
+    const newUser = {
+      id: v4(),
+      username: newUserName,
+      blocked: false,
+      role: "user",
+      password: "",
+    };
+
+    const userAlereadyExists = find(users, { username: newUserName });
+
+    if (userAlereadyExists) {
+      return setError("Username already exists");
+    }
+
+    const newDatabase = {
+      ...database,
+      users: [...users, newUser],
+    };
+
+    dispatch(setDatabase(newDatabase));
+    setVisibleModal(false);
+    message.success("User was created");
+  };
 
   return (
     <>
@@ -73,6 +117,10 @@ export const UserList: React.FC<UserListProps> = ({}) => {
         onCancel={() => setVisibleModal(false)}
         onOk={handleCreateUser}
       >
+        {error && (
+          <Alert style={{ marginBottom: 15 }} message={error} type="error" />
+        )}
+        <div style={{ marginBottom: 5 }}>New user name</div>{" "}
         <Input
           value={newUserName}
           onChange={(e) => setNewUserName(e.target.value)}

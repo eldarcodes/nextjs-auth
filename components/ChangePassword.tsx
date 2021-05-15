@@ -32,7 +32,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: FormValues) => {
-    const { old_password, new_password, confirm_password } = values;
+    const { old_password = "", new_password, confirm_password } = values;
 
     const user = getUser(users);
 
@@ -89,7 +89,6 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
         <Form.Item
           label="Old password"
           name="old_password"
-          rules={[{ required: true, message: "Please input your username!" }]}
           style={{ marginBottom: 15 }}
         >
           <Input.Password />
