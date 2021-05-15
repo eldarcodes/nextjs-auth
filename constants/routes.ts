@@ -1,3 +1,4 @@
+import { isAdmin } from "../utils/isAdmin";
 import { isAuth } from "../utils/isAuth";
 
 interface IRoutes {
@@ -7,17 +8,20 @@ interface IRoutes {
 }
 
 export const getRoutes = (): IRoutes[] => {
-  const user = !!isAuth();
+  const _isAuth = !!isAuth();
+
+  const _isAdmin = isAdmin();
+
   return [
     {
       path: "/",
       title: "Main",
-      hide: !user,
+      hide: !_isAuth || !_isAdmin,
     },
     {
       path: "/login",
       title: "Login",
-      hide: user,
+      hide: _isAuth,
     },
     {
       path: "/about",
