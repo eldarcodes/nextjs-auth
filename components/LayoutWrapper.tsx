@@ -36,7 +36,11 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
         <Menu theme="dark" mode="horizontal" selectedKeys={[router.pathname]}>
           {_isAuth && (
             <Menu.Item key="username">
-              User: <Tag>{user?.username}</Tag>
+              <Link href="/">
+                <>
+                  User: <Tag>{user?.username}</Tag>
+                </>
+              </Link>
             </Menu.Item>
           )}
           {routes.map(({ path, title }) => (
