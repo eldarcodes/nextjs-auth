@@ -67,8 +67,8 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
       ...database,
       users: newUsers,
     };
-
     dispatch(setDatabase(newDatabase));
+    setError("");
     message.success("Password changed!");
     form.resetFields();
   };
@@ -92,7 +92,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
           rules={[{ required: true, message: "Please input your username!" }]}
           style={{ marginBottom: 15 }}
         >
-          <Input />
+          <Input.Password />
         </Form.Item>
 
         <Form.Item
