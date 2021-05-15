@@ -6,6 +6,7 @@ import { getUser } from "../utils/getUser";
 import { isAdmin } from "./../utils/isAdmin";
 import { useSelector } from "react-redux";
 import { ReduxDatabase } from "../store";
+import { UserList } from "../components/UserList";
 
 export default function Home() {
   const users = useSelector(
@@ -30,7 +31,11 @@ export default function Home() {
   const user = getUser(users);
 
   if (_isAdmin) {
-    return <LayoutWrapper>Admin {user.username}</LayoutWrapper>;
+    return (
+      <LayoutWrapper>
+        <UserList />
+      </LayoutWrapper>
+    );
   }
 
   return <LayoutWrapper>{user.username}</LayoutWrapper>;

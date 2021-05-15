@@ -1,9 +1,11 @@
-import { database as defaultDatabase } from "../data/database";
+import { database as defaultDatabase, IDatabase } from "../data/database";
 import { isServer } from "../utils/isServer";
 
 const localStorageDatabase = !isServer() && localStorage.getItem("database");
 
 const database = JSON.parse(localStorageDatabase) || defaultDatabase;
+
+console.log(database?.users);
 
 function databaseReducer(state = database, action) {
   switch (action.type) {

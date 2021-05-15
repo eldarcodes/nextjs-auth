@@ -13,7 +13,7 @@ export interface ReduxDatabase {
 
 const devTools = !isServer() && (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
-const store: Store<IDatabase> = createStore(
+const store: Store<ReduxDatabase> = createStore(
   rootReducer,
   devTools && devTools()
 );

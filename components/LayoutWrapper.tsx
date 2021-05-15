@@ -1,9 +1,12 @@
 import React from "react";
-import { Menu, Layout, Button } from "antd";
+import { Menu, Layout, Button, Tag } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getRoutes } from "../constants/routes";
 import { isAuth } from "../utils/isAuth";
+import { getUser } from "../utils/getUser";
+import { useSelector } from "react-redux";
+import { ReduxDatabase } from "../store";
 
 const { Header, Content } = Layout;
 
@@ -14,7 +17,13 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
 
   const routes = getRoutes();
 
-  const user = isAuth();
+  const _isAuth = isAuth();
+
+  const users = useSelector(
+    (state: ReduxDatabase) => state.databaseReducer.users
+  );
+
+  const user = getUser(users);
 
   const handleLogout = () => {
     localStorage.removeItem("user_id");
@@ -25,12 +34,17 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
     <Layout className="layout">
       <Header>
         <Menu theme="dark" mode="horizontal" selectedKeys={[router.pathname]}>
+          {_isAuth && (
+            <Menu.Item key="username">
+              User: <Tag>{user?.username}</Tag>
+            </Menu.Item>
+          )}
           {routes.map(({ path, title }) => (
             <Menu.Item key={path}>
               <Link href={path}>{title}</Link>
             </Menu.Item>
           ))}
-          {user && (
+          {_isAuth && (
             <Menu.Item key="logout" danger onClick={handleLogout}>
               Logout
             </Menu.Item>

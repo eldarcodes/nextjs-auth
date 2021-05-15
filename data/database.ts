@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export type User = {
   username: string;
   password: string;
