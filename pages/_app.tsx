@@ -8,7 +8,7 @@ import "../styles/global.css";
 import { isServer } from "../utils/isServer";
 
 export default function MyApp({ Component, pageProps }) {
-  if (!isServer) {
+  if (!isServer()) {
     const localStorageDatabase = localStorage.getItem("database");
 
     if (!localStorageDatabase) {
