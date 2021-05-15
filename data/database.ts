@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export type User = {
   username: string;
   password: string;
@@ -5,8 +7,9 @@ export type User = {
   role: "admin" | "user";
 };
 
-interface IDatabase {
+export interface IDatabase {
   users: User[];
+  MIN_PASSWORD_LENGTH: number;
 }
 
 export const database: IDatabase = {
@@ -30,4 +33,5 @@ export const database: IDatabase = {
       role: "user",
     },
   ],
+  MIN_PASSWORD_LENGTH: 3,
 };

@@ -4,8 +4,14 @@ import { useRouter } from "next/router";
 import { isAuth } from "../utils/isAuth";
 import { getUser } from "../utils/getUser";
 import { isAdmin } from "./../utils/isAdmin";
+import { useSelector } from "react-redux";
+import { ReduxDatabase } from "../store";
 
 export default function Home() {
+  const users = useSelector(
+    (state: ReduxDatabase) => state.databaseReducer.users
+  );
+
   const router = useRouter();
 
   const _isAuth = isAuth();
@@ -14,8 +20,6 @@ export default function Home() {
   useEffect(() => {
     if (!_isAuth) {
       router.push("/login");
-    } else if (_isAuth && !_isAdmin) {
-      router.push("/about");
     }
   }, [_isAuth, _isAdmin]);
 
@@ -23,7 +27,11 @@ export default function Home() {
     return null;
   }
 
-  const user = getUser();
+  const user = getUser(users);
+
+  if (_isAdmin) {
+    return <LayoutWrapper>Admin {user.username}</LayoutWrapper>;
+  }
 
   return <LayoutWrapper>{user.username}</LayoutWrapper>;
 }

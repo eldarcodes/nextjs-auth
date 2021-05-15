@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Alert } from "antd";
-import { database, User } from "./../data/database";
+import { User } from "./../data/database";
 import { useRouter } from "next/router";
 import { find } from "lodash";
+import { HIDE_ERROR_DELAY } from "../constants/constants";
+import { useSelector } from "react-redux";
+import { ReduxDatabase } from "../store";
 
 interface LoginProps {}
 
@@ -11,10 +14,12 @@ interface FormValues {
   password: string;
 }
 
-const HIDE_ERROR_DELAY = 6000;
-
 export const Login: React.FC<LoginProps> = ({}) => {
   const [error, setError] = useState<string>("");
+
+  const users = useSelector(
+    (state: ReduxDatabase) => state.databaseReducer.users
+  );
 
   const router = useRouter();
 
@@ -27,14 +32,12 @@ export const Login: React.FC<LoginProps> = ({}) => {
   }, [error]);
 
   const onFinish = (values: FormValues) => {
-    console.log(values, database);
-
     const { password, username } = values;
 
-    const isCorrectUsername = !!find(database.users, { username });
-    const isCorrectPassword = !!find(database.users, { username, password });
+    const isCorrectUsername = !!find(users, { username });
+    const isCorrectPassword = !!find(users, { username, password });
 
-    const user = find(database.users, { username, password });
+    const user = find(users, { username, password });
 
     if (!isCorrectUsername) {
       return setError("Wrong username");

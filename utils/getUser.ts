@@ -1,10 +1,10 @@
-import { database, User } from "../data/database";
+import { User } from "../data/database";
 import { isServer } from "./isServer";
 import { find } from "lodash";
 
-export const getUser = (): User | null => {
+export const getUser = (users: User[]): any => {
   const userId = !isServer() && localStorage.getItem("user_id");
-  const user = find(database.users, { id: userId });
+  const user = find(users, { id: userId });
 
-  return user;
+  return user || {};
 };
