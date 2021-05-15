@@ -135,8 +135,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
           <Image src={captcha.path} alt="Captcha" width="200" height="50" />
           <Button
             style={{ marginRight: 10 }}
-            icon={<SyncOutlined />}
-            loading={loading}
+            icon={<SyncOutlined spin={loading} />}
             onClick={getNewCaptcha}
           />
         </Row>
