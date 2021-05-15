@@ -27,12 +27,12 @@ export const UserList: React.FC<UserListProps> = ({}) => {
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>("");
   const [error, setError] = useState<string>("");
-
   const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
-
+  const dispatch = useDispatch();
   const [minPasswordLength, setMinPasswordLength] = useState<number>(
     database.MIN_PASSWORD_LENGTH
   );
+  const { users } = database;
 
   useEffect(() => {
     if (error) {
@@ -41,10 +41,6 @@ export const UserList: React.FC<UserListProps> = ({}) => {
       }, HIDE_ERROR_DELAY);
     }
   }, [error]);
-
-  const { users } = database;
-
-  const dispatch = useDispatch();
 
   const columns = [
     {

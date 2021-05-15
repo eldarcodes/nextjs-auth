@@ -16,6 +16,12 @@ interface FormValues {
 
 export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
   const [error, setError] = useState<string>("");
+
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
+  const { MIN_PASSWORD_LENGTH, users } = database;
+
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -24,16 +30,11 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
     }
   }, [error]);
 
-  const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
-
-  const { MIN_PASSWORD_LENGTH, users } = database;
-
-  const dispatch = useDispatch();
-  const [form] = Form.useForm();
   const onFinish = (values: FormValues) => {
     const { old_password = "", new_password, confirm_password } = values;
 
     const user = getUser(users);
+
     if (user.password !== old_password) {
       return setError("Old password is incorrect");
     }

@@ -23,4 +23,5 @@ export const setDatabase = (payload) => {
     payload,
   };
 };
+
 export default databaseReducer;
