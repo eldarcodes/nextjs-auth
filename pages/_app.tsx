@@ -6,6 +6,14 @@ import "antd/dist/antd.css";
 import "../styles/vars.css";
 import "../styles/global.css";
 import { isServer } from "../utils/isServer";
+import Router from "next/router";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+// Binding events
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 export default function MyApp({ Component, pageProps }) {
   if (!isServer()) {

@@ -64,4 +64,40 @@ export const captchaSource: ICaptcha[] = [
     path: "/captcha-15.png",
     answer: "thvnb",
   },
+  {
+    path: "/captcha-16.png",
+    answer: "fk1dg8a",
+  },
+  {
+    path: "/captcha-17.png",
+    answer: "36ckv8fs",
+  },
+  {
+    path: "/captcha-18.png",
+    answer: "6ckd8s",
+  },
+  {
+    path: "/captcha-19.png",
+    answer: "3df8hf",
+  },
+  {
+    path: "/captcha-20.png",
+    answer: "54kfd9",
+  },
+  {
+    path: "/captcha-21.png",
+    answer: "6dfgsa",
+  },
+  {
+    path: "/captcha-22.png",
+    answer: "gfd7sdf",
+  },
+  {
+    path: "/captcha-23.png",
+    answer: "kjqo7d",
+  },
+  {
+    path: "/captcha-24.png",
+    answer: "tdfg8df",
+  },
 ];

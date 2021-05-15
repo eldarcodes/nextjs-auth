@@ -25,6 +25,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
   const getRandomIndex = () => Math.floor(Math.random() * captchaSource.length);
 
   const [captchaIndex, setCaptchaIndex] = useState<number>(getRandomIndex());
+  const [loading, setLoading] = useState<boolean>(false);
 
   const users = useSelector(
     (state: ReduxDatabase) => state.databaseReducer.users
@@ -54,25 +55,26 @@ export const Login: React.FC<LoginProps> = ({}) => {
     const user = find(users, { username, password });
 
     if (inputCaptcha.toLowerCase() !== captcha.answer) {
-      form.setFieldsValue({
-        captcha: "",
-      });
       getNewCaptcha();
       return setError("Incorrect captcha");
     }
 
     if (!isCorrectUsername) {
+      getNewCaptcha();
       return setError("Wrong username");
     }
     if (!isCorrectPassword) {
+      getNewCaptcha();
       return setError("Wrong password");
     }
 
     if (!user) {
+      getNewCaptcha();
       return setError("User not found");
     }
 
     if (user.blocked) {
+      getNewCaptcha();
       return setError("User is blocked");
     }
 
@@ -84,12 +86,19 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
   const getNewCaptcha = () => {
     const newIndex = getRandomIndex();
+    setLoading(true);
 
     if (newIndex === captchaIndex) {
       return getNewCaptcha();
     }
+    setTimeout(() => {
+      setLoading(false);
+      form.setFieldsValue({
+        captcha: "",
+      });
 
-    setCaptchaIndex(newIndex);
+      setCaptchaIndex(newIndex);
+    }, 500);
   };
 
   return (
@@ -127,7 +136,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
           <Button
             style={{ marginRight: 10 }}
             icon={<SyncOutlined />}
-            size="large"
+            loading={loading}
             onClick={getNewCaptcha}
           />
         </Row>
