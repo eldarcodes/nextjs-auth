@@ -67,7 +67,7 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     },
     {
       title: "Block user",
-      key: "action",
+      key: "block",
       render: (text, record) =>
         record.role !== "admin" ? (
           <Switch
@@ -76,11 +76,39 @@ export const UserList: React.FC<UserListProps> = ({}) => {
           />
         ) : null,
     },
+    {
+      title: "Enable password limit",
+      key: "limit",
+      render: (text, record) =>
+        record.role !== "admin" ? (
+          <Switch
+            defaultChecked={record.enableLimit}
+            onChange={(flag) => handleEnableLimit(flag, record.id)}
+          />
+        ) : null,
+    },
   ];
 
   const handleBlockUser = (flag, id) => {
     const newUsers = users.map((user) =>
       user.id === id ? { ...user, blocked: flag } : user
+    );
+
+    const user = find(users, { id });
+
+    const newDatabase = {
+      ...database,
+      users: newUsers,
+    };
+
+    message.info(`${user.username} was ${flag ? "blocked" : "unblocked"}`);
+
+    dispatch(setDatabase(newDatabase));
+  };
+
+  const handleEnableLimit = (flag, id) => {
+    const newUsers = users.map((user) =>
+      user.id === id ? { ...user, enableLimit: flag } : user
     );
 
     const newDatabase = {
@@ -113,6 +141,13 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     dispatch(setDatabase(newDatabase));
     setVisibleModal(false);
     message.success("User was created");
+  };
+
+  const saveMinPasswordLength = () => {
+    dispatch(
+      setDatabase({ ...database, MIN_PASSWORD_LENGTH: minPasswordLength })
+    );
+    message.success("New password length saved");
   };
 
   return (
@@ -155,6 +190,7 @@ export const UserList: React.FC<UserListProps> = ({}) => {
             style={{ marginLeft: 5 }}
             size="large"
             icon={<SaveOutlined />}
+            onClick={saveMinPasswordLength}
             disabled={+minPasswordLength === +database.MIN_PASSWORD_LENGTH}
           >
             Save

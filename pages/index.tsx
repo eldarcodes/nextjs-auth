@@ -21,6 +21,8 @@ export default function Home() {
   useEffect(() => {
     if (!_isAuth) {
       router.push("/login");
+    } else if (_isAuth && !_isAdmin) {
+      router.push("/about");
     }
   }, [_isAuth, _isAdmin]);
 

@@ -30,12 +30,10 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
 
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-
   const onFinish = (values: FormValues) => {
     const { old_password = "", new_password, confirm_password } = values;
 
     const user = getUser(users);
-
     if (user.password !== old_password) {
       return setError("Old password is incorrect");
     }
@@ -44,7 +42,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
       return setError("Passwords does not match");
     }
 
-    if (new_password.length < MIN_PASSWORD_LENGTH) {
+    if (user.enableLimit && new_password.length < MIN_PASSWORD_LENGTH) {
       return setError(
         `Password must be more than ${MIN_PASSWORD_LENGTH} characters`
       );

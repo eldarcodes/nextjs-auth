@@ -16,7 +16,7 @@ export const getRoutes = (): IRoutes[] => {
     {
       path: "/",
       title: "Main",
-      hide: !_isAuth,
+      hide: !_isAuth || !_isAdmin,
     },
     {
       path: "/login",
