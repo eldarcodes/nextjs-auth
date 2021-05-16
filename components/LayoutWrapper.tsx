@@ -30,6 +30,11 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
     router.reload();
   };
 
+  const handleReset = () => {
+    localStorage.clear();
+    router.reload();
+  };
+
   return (
     <Layout className="layout">
       <Header>
@@ -53,6 +58,9 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
               Logout
             </Menu.Item>
           )}
+          <Menu.Item key="logout" danger onClick={handleReset}>
+            Reset to defaults
+          </Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: "0 50px", marginTop: 16 }}>

@@ -15,7 +15,7 @@ export const database: IDatabase = {
   users: [
     {
       id: "10756446927454463",
-      username: "denis",
+      username: "admin",
       password: "denis2000",
       role: "admin",
       blocked: false,
