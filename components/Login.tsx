@@ -4,11 +4,14 @@ import { User } from "./../data/database";
 import { useRouter } from "next/router";
 import { find } from "lodash";
 import { HIDE_ERROR_DELAY } from "../constants/constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReduxDatabase } from "../store";
 import Image from "next/image";
 import { captchaSource } from "./../constants/captcha";
 import { SyncOutlined } from "@ant-design/icons";
+import { setDatabase } from "../redux/database-reducer";
+import { v4 } from "uuid";
+import dayjs from "dayjs";
 
 interface LoginProps {}
 
@@ -26,9 +29,10 @@ export const Login: React.FC<LoginProps> = ({}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
   const router = useRouter();
-  const users = useSelector(
-    (state: ReduxDatabase) => state.databaseReducer.users
-  );
+  const dispatch = useDispatch();
+  const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
+
+  const { users, logs } = database;
 
   const captcha = captchaSource[captchaIndex];
 
@@ -76,7 +80,20 @@ export const Login: React.FC<LoginProps> = ({}) => {
     }
 
     const _user: User = user;
-
+    dispatch(
+      setDatabase({
+        ...database,
+        logs: [
+          ...logs,
+          {
+            user: _user,
+            id: v4(),
+            action: "login",
+            timestamp: dayjs().unix(),
+          },
+        ],
+      })
+    );
     localStorage.setItem("user_id", _user.id);
     router.push("/");
   };

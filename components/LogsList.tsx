@@ -14,9 +14,9 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
 
   const getActionsMessage = (user: User, action: LogAction): string => {
     const messages = {
-      login: `${user.username} logged into account`,
-      logout: `${user.username} logged out`,
-      password: `${user.username} changed his password`,
+      login: `"${user.username}" logged into account`,
+      logout: `"${user.username}" logged out`,
+      password: `"${user.username}" changed his password`,
     };
 
     return messages[action];
@@ -35,12 +35,17 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       dataIndex: "action",
     },
     {
+      title: "Message",
+      key: "message",
+      dataIndex: "action",
+      render: (_, record) => getActionsMessage(record.user, record.action),
+    },
+
+    {
       title: "Date",
       key: "action",
       dataIndex: "timestamp",
-      render: (timestamp) => {
-        return getDate({ timestamp });
-      },
+      render: (timestamp) => getDate({ timestamp }),
       sorter: (a, b) => a.timestamp - b.timestamp,
     },
   ];
