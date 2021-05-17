@@ -1,18 +1,30 @@
+export type Role = "admin" | "user";
+export type LogAction = "login" | "logout" | "password";
+
 export type User = {
   username: string;
   password: string;
   id: string;
-  role: "admin" | "user";
+  role: Role;
   blocked: boolean;
   enableLimit: boolean;
 };
 
+export type Log = {
+  user: User;
+  id: string;
+  action: LogAction;
+  timestamp: number;
+};
+
 export interface IDatabase {
   users: User[];
+  logs: Log[];
   MIN_PASSWORD_LENGTH: number;
 }
 
 export const database: IDatabase = {
+  logs: [],
   users: [
     {
       id: "10756446927454463",

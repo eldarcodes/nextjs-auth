@@ -7,8 +7,9 @@ import { isAdmin } from "./../utils/isAdmin";
 import { useSelector } from "react-redux";
 import { ReduxDatabase } from "../store";
 import { UserList } from "../components/UserList";
+import { LogsList } from "../components/LogsList";
 
-export default function Home() {
+export default function Logs() {
   const users = useSelector(
     (state: ReduxDatabase) => state.databaseReducer.users
   );
@@ -33,7 +34,7 @@ export default function Home() {
   if (_isAdmin) {
     return (
       <LayoutWrapper>
-        <UserList />
+        <LogsList />
       </LayoutWrapper>
     );
   } else {

@@ -32,5 +32,10 @@ export const getRoutes = (): IRoutes[] => {
       title: "Change password",
       hide: !_isAuth,
     },
+    {
+      path: "/logs",
+      title: "User logs",
+      hide: !_isAuth || !_isAdmin,
+    },
   ].filter((i) => !i.hide);
 };
