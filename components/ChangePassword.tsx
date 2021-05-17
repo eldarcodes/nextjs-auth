@@ -5,6 +5,8 @@ import { getUser } from "../utils/getUser";
 import { useDispatch, useSelector } from "react-redux";
 import { ReduxDatabase } from "../store";
 import { setDatabase } from "../redux/database-reducer";
+import { v4 } from "uuid";
+import dayjs from "dayjs";
 
 interface ChangePasswordProps {}
 
@@ -20,7 +22,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
-  const { MIN_PASSWORD_LENGTH, users } = database;
+  const { MIN_PASSWORD_LENGTH, users, logs } = database;
 
   useEffect(() => {
     if (error) {
@@ -65,6 +67,15 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
     const newDatabase = {
       ...database,
       users: newUsers,
+      logs: [
+        {
+          user,
+          id: v4(),
+          action: "password",
+          timestamp: dayjs().unix(),
+        },
+        ...logs,
+      ],
     };
     dispatch(setDatabase(newDatabase));
     setError("");

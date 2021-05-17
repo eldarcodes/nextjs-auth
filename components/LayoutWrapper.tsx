@@ -5,8 +5,11 @@ import { useRouter } from "next/router";
 import { getRoutes } from "../constants/routes";
 import { isAuth } from "../utils/isAuth";
 import { getUser } from "../utils/getUser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReduxDatabase } from "../store";
+import { v4 } from "uuid";
+import dayjs from "dayjs";
+import { setDatabase } from "../redux/database-reducer";
 
 const { Header, Content } = Layout;
 
@@ -14,18 +17,31 @@ interface LayoutProps {}
 
 export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const routes = getRoutes();
-
   const _isAuth = isAuth();
+  const database = useSelector((state: ReduxDatabase) => state.databaseReducer);
 
-  const users = useSelector(
-    (state: ReduxDatabase) => state.databaseReducer.users
-  );
+  const { users, logs } = database;
 
   const user = getUser(users);
 
   const handleLogout = () => {
+    dispatch(
+      setDatabase({
+        ...database,
+        logs: [
+          {
+            user: user,
+            id: v4(),
+            action: "logout",
+            timestamp: dayjs().unix(),
+          },
+          ...logs,
+        ],
+      })
+    );
     localStorage.removeItem("user_id");
     router.reload();
   };

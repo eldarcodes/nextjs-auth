@@ -84,13 +84,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
       setDatabase({
         ...database,
         logs: [
-          ...logs,
           {
             user: _user,
             id: v4(),
             action: "login",
             timestamp: dayjs().unix(),
           },
+          ...logs,
         ],
       })
     );

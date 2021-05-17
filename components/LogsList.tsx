@@ -14,9 +14,9 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
 
   const getActionsMessage = (user: User, action: LogAction): string => {
     const messages = {
-      login: `"${user.username}" logged into account`,
-      logout: `"${user.username}" logged out`,
-      password: `"${user.username}" changed his password`,
+      login: `User "${user.username}" login to account`,
+      logout: `User "${user.username}" logged out`,
+      password: `User "${user.username}" changed his password`,
     };
 
     return messages[action];
@@ -27,12 +27,14 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       title: "Username",
       key: "username",
       dataIndex: ["user", "username"],
+      sorter: (a, b) => a.user.username.length - b.user.username.length,
       width: "20%",
     },
     {
       title: "Action",
       key: "action",
       dataIndex: "action",
+      sorter: (a, b) => a.action.length - b.action.length,
     },
     {
       title: "Message",
