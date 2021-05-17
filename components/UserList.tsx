@@ -197,6 +197,16 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     const newDatabase = {
       ...database,
       users: [...users, newUser],
+      logs: [
+        {
+          user: newUser,
+          id: v4(),
+          action: "create_account",
+          timestamp: dayjs().unix(),
+          ref: currentUser,
+        },
+        ...logs,
+      ],
     };
 
     dispatch(setDatabase(newDatabase));
@@ -206,7 +216,19 @@ export const UserList: React.FC<UserListProps> = ({}) => {
 
   const saveMinPasswordLength = () => {
     dispatch(
-      setDatabase({ ...database, MIN_PASSWORD_LENGTH: minPasswordLength })
+      setDatabase({
+        ...database,
+        MIN_PASSWORD_LENGTH: minPasswordLength,
+        logs: [
+          {
+            user: currentUser,
+            id: v4(),
+            action: "password_limit",
+            timestamp: dayjs().unix(),
+          },
+          ...logs,
+        ],
+      })
     );
     message.success("New password length saved");
   };

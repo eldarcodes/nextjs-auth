@@ -5,6 +5,8 @@ export type LogAction =
   | "password"
   | "delete_account"
   | "block_account"
+  | "create_account"
+  | "password_limit"
   | "limit_account";
 
 export type User = {

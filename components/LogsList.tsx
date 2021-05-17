@@ -18,6 +18,7 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       login: `User "${user.username}" login to account`,
       logout: `User "${user.username}" logged out`,
       password: `User "${user.username}" changed his password`,
+      password_limit: `Admin "${user.username}" change password limit for users`,
       delete_account: `Admin "${ref?.username}" delete account "${user.username}" `,
       block_account: `Admin "${ref?.username}" ${
         user.blocked ? "unblocked" : "blocked"
@@ -25,6 +26,7 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       limit_account: `Admin "${ref?.username}" ${
         user.enableLimit ? "disable limit" : "enable limit"
       } for account "${user.username}"`,
+      create_account: `Admin "${ref?.username}" create account with username - "${user.username}"`,
     };
 
     return messages[action];
