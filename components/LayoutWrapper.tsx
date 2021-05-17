@@ -58,7 +58,7 @@ export const LayoutWrapper: React.FC<LayoutProps> = ({ children }) => {
               Logout
             </Menu.Item>
           )}
-          <Menu.Item key="logout" danger onClick={handleReset}>
+          <Menu.Item key="reset_to_defaults" danger onClick={handleReset}>
             Reset to defaults
           </Menu.Item>
         </Menu>
