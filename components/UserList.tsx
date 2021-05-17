@@ -11,6 +11,7 @@ import {
   Col,
   Row,
   InputNumber,
+  Popconfirm,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +20,7 @@ import { setDatabase } from "../redux/database-reducer";
 import { ReduxDatabase } from "../store";
 import { find } from "lodash";
 import { HIDE_ERROR_DELAY } from "../constants/constants";
-import { PlusOutlined, SaveOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
 
 interface UserListProps {}
 
@@ -83,7 +84,35 @@ export const UserList: React.FC<UserListProps> = ({}) => {
           />
         ) : null,
     },
+    {
+      title: "Delete user",
+      key: "delete",
+      render: (text, record) =>
+        record.role !== "admin" ? (
+          <Popconfirm
+            title="Are you sure you want to delete this account?"
+            onConfirm={() => handleDeleteAccount(record.id)}
+          >
+            <Button icon={<DeleteOutlined />} />
+          </Popconfirm>
+        ) : null,
+    },
   ];
+
+  const handleDeleteAccount = (id) => {
+    const newUsers = users.filter((user) => user.id !== id);
+
+    const user = find(users, { id });
+
+    const newDatabase = {
+      ...database,
+      users: newUsers,
+    };
+
+    dispatch(setDatabase(newDatabase));
+
+    message.info(`Account "${user.username}" was deleted`);
+  };
 
   const handleBlockUser = (flag, id) => {
     const newUsers = users.map((user) =>
