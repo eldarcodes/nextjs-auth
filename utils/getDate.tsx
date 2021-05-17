@@ -7,7 +7,7 @@ interface DateProps {
 }
 
 export const getDate = ({
-  absFormat = "ddd, DD MMM YYYY HH:mm",
+  absFormat = "ddd, DD MMM YYYY HH:mm:ss",
   timestamp,
 }: DateProps) => {
   dayjs.extend(relativeTime);
