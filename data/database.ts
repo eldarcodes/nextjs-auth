@@ -2,7 +2,7 @@ export type Role = "admin" | "user";
 export type LogAction =
   | "login"
   | "logout"
-  | "password"
+  | "change_password"
   | "delete_account"
   | "block_account"
   | "create_account"

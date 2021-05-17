@@ -71,7 +71,7 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({}) => {
         {
           user,
           id: v4(),
-          action: "password",
+          action: "change_password",
           timestamp: dayjs().unix(),
         },
         ...logs,

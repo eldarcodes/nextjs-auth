@@ -15,18 +15,18 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
   const getActionsMessage = (record, action: LogAction): string => {
     const { user, ref }: Log = record;
     const messages = {
-      login: `User "${user.username}" login to account`,
-      logout: `User "${user.username}" logged out`,
-      password: `User "${user.username}" changed his password`,
-      password_limit: `Admin "${user.username}" change password limit for users`,
-      delete_account: `Admin "${ref?.username}" delete account "${user.username}" `,
-      block_account: `Admin "${ref?.username}" ${
-        user.blocked ? "unblocked" : "blocked"
-      } account "${user.username}"`,
-      limit_account: `Admin "${ref?.username}" ${
+      login: `login to account`,
+      logout: `logged out`,
+      change_password: `changed his password`,
+      password_limit: `change password limit for users`,
+      delete_account: `delete account "${user.username}" `,
+      block_account: `${user.blocked ? "unblocked" : "blocked"} account "${
+        user.username
+      }"`,
+      limit_account: `${
         user.enableLimit ? "disable limit" : "enable limit"
       } for account "${user.username}"`,
-      create_account: `Admin "${ref?.username}" create account with username - "${user.username}"`,
+      create_account: `create account with username - "${user.username}"`,
     };
 
     return messages[action];
@@ -38,6 +38,8 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       key: "username",
       dataIndex: ["user", "username"],
       sorter: (a, b) => a.user.username.length - b.user.username.length,
+      render: (_, record) =>
+        record?.ref ? record?.ref?.username : record?.user?.username,
       width: "20%",
     },
     {
