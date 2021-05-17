@@ -160,9 +160,21 @@ export const UserList: React.FC<UserListProps> = ({}) => {
       user.id === id ? { ...user, enableLimit: flag } : user
     );
 
+    const user = find(users, { id });
+
     const newDatabase = {
       ...database,
       users: newUsers,
+      logs: [
+        {
+          user,
+          id: v4(),
+          action: "limit_account",
+          timestamp: dayjs().unix(),
+          ref: currentUser,
+        },
+        ...logs,
+      ],
     };
     dispatch(setDatabase(newDatabase));
   };

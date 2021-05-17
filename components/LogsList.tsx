@@ -22,6 +22,9 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       block_account: `Admin "${ref?.username}" ${
         user.blocked ? "unblocked" : "blocked"
       } account "${user.username}"`,
+      limit_account: `Admin "${ref?.username}" ${
+        user.enableLimit ? "disable limit" : "enable limit"
+      } for account "${user.username}"`,
     };
 
     return messages[action];

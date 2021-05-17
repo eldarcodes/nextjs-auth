@@ -4,7 +4,8 @@ export type LogAction =
   | "logout"
   | "password"
   | "delete_account"
-  | "block_account";
+  | "block_account"
+  | "limit_account";
 
 export type User = {
   username: string;
