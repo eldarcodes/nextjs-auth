@@ -1,5 +1,10 @@
 export type Role = "admin" | "user";
-export type LogAction = "login" | "logout" | "password" | "delete_account";
+export type LogAction =
+  | "login"
+  | "logout"
+  | "password"
+  | "delete_account"
+  | "block_account";
 
 export type User = {
   username: string;

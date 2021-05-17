@@ -138,6 +138,16 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     const newDatabase = {
       ...database,
       users: newUsers,
+      logs: [
+        {
+          user,
+          id: v4(),
+          action: "block_account",
+          timestamp: dayjs().unix(),
+          ref: currentUser,
+        },
+        ...logs,
+      ],
     };
 
     message.info(`${user.username} was ${flag ? "blocked" : "unblocked"}`);

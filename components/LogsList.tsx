@@ -18,7 +18,10 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       login: `User "${user.username}" login to account`,
       logout: `User "${user.username}" logged out`,
       password: `User "${user.username}" changed his password`,
-      delete_account: `Admin "${ref?.username}" delete account "${user.username}"`,
+      delete_account: `Admin "${ref?.username}" delete account "${user.username}" `,
+      block_account: `Admin "${ref?.username}" ${
+        user.blocked ? "unblocked" : "blocked"
+      } account "${user.username}"`,
     };
 
     return messages[action];
