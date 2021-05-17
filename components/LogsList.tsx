@@ -2,7 +2,7 @@ import React from "react";
 import { message, Table, Typography } from "antd";
 import { ReduxDatabase } from "./../store";
 import { useSelector } from "react-redux";
-import { LogAction, User } from "../data/database";
+import { Log, LogAction, User } from "../data/database";
 import { getDate } from "../utils/getDate";
 
 interface LogsListProps {}
@@ -12,11 +12,13 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
     (state: ReduxDatabase) => state.databaseReducer.logs
   );
 
-  const getActionsMessage = (user: User, action: LogAction): string => {
+  const getActionsMessage = (record, action: LogAction): string => {
+    const { user, ref }: Log = record;
     const messages = {
       login: `User "${user.username}" login to account`,
       logout: `User "${user.username}" logged out`,
       password: `User "${user.username}" changed his password`,
+      delete_account: `Admin "${ref?.username}" delete account "${user.username}"`,
     };
 
     return messages[action];
@@ -40,7 +42,7 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
       title: "Message",
       key: "message",
       dataIndex: "action",
-      render: (_, record) => getActionsMessage(record.user, record.action),
+      render: (_, record) => getActionsMessage(record, record.action),
     },
 
     {

@@ -1,5 +1,5 @@
 export type Role = "admin" | "user";
-export type LogAction = "login" | "logout" | "password";
+export type LogAction = "login" | "logout" | "password" | "delete_account";
 
 export type User = {
   username: string;
@@ -15,6 +15,7 @@ export type Log = {
   id: string;
   action: LogAction;
   timestamp: number;
+  ref?: User;
 };
 
 export interface IDatabase {

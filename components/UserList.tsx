@@ -21,6 +21,8 @@ import { ReduxDatabase } from "../store";
 import { find } from "lodash";
 import { HIDE_ERROR_DELAY } from "../constants/constants";
 import { DeleteOutlined, PlusOutlined, SaveOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
+import { getUser } from "../utils/getUser";
 
 interface UserListProps {}
 
@@ -33,7 +35,9 @@ export const UserList: React.FC<UserListProps> = ({}) => {
   const [minPasswordLength, setMinPasswordLength] = useState<number>(
     database.MIN_PASSWORD_LENGTH
   );
-  const { users } = database;
+
+  const { users, logs } = database;
+  const currentUser = getUser(users);
 
   useEffect(() => {
     if (error) {
@@ -107,6 +111,16 @@ export const UserList: React.FC<UserListProps> = ({}) => {
     const newDatabase = {
       ...database,
       users: newUsers,
+      logs: [
+        {
+          user,
+          id: v4(),
+          action: "delete_account",
+          timestamp: dayjs().unix(),
+          ref: currentUser,
+        },
+        ...logs,
+      ],
     };
 
     dispatch(setDatabase(newDatabase));
