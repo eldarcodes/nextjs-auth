@@ -1,5 +1,5 @@
 import React from "react";
-import { message, Table, Typography } from "antd";
+import { message, Table, Tabs, Typography } from "antd";
 import { ReduxDatabase } from "./../store";
 import { useSelector } from "react-redux";
 import { Log, LogAction, User } from "../data/database";
@@ -64,12 +64,26 @@ export const LogsList: React.FC<LogsListProps> = ({}) => {
     },
   ];
 
+  const loginLogsActions = ["login", "logout", "create_account"];
+
+  const loginLogs = logs.filter((log) => loginLogsActions.includes(log.action));
+  const adminLogs = logs.filter(
+    (log) => !loginLogs.map((i) => i.action).includes(log.action)
+  );
+
   return (
     <>
       <Typography.Title style={{ marginBottom: 0 }} level={2}>
         User logs
       </Typography.Title>
-      <Table rowKey="id" dataSource={logs} columns={columns} />
+      <Tabs>
+        <Tabs.TabPane tab="Login / Logout" key="1">
+          <Table rowKey="id" dataSource={loginLogs} columns={columns} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Admin actions" key="2">
+          <Table rowKey="id" dataSource={adminLogs} columns={columns} />
+        </Tabs.TabPane>
+      </Tabs>
     </>
   );
 };
