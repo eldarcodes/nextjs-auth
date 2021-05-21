@@ -9,6 +9,7 @@ import { isServer } from "../utils/isServer";
 import Router from "next/router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { Quiz } from "../components/Quiz";
 
 // Binding events
 Router.events.on("routeChangeStart", () => NProgress.start());
@@ -27,6 +28,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <Component {...pageProps} />
+      <Quiz />
     </Provider>
   );
 }
