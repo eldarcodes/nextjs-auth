@@ -4,9 +4,9 @@ import { ChangePassword } from "../components/ChangePassword";
 import { LayoutWrapper } from "../components/LayoutWrapper";
 import { isAuth } from "../utils/isAuth";
 
-interface ChangePassowordProps {}
+interface ChangePasswordProps {}
 
-const ChangePassoword: React.FC<ChangePassowordProps> = ({}) => {
+const ChangePasswordPage: React.FC<ChangePasswordProps> = ({}) => {
   const router = useRouter();
 
   const _isAuth = isAuth();
@@ -26,4 +26,4 @@ const ChangePassoword: React.FC<ChangePassowordProps> = ({}) => {
   );
 };
 
-export default ChangePassoword;
+export default ChangePasswordPage;
